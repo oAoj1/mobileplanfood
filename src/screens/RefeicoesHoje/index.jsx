@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react"
+
 import { 
     SafeAreaView, 
     Text, 
@@ -9,18 +11,22 @@ import {
 
 import Header from "../../components/Header"
 
+import api from "../../api/api"
+
 export default function RefeicoesHoje(){
 
-    const alimentos = [
-        'arroz',
-        'feijao',
-        'ovo',
-        'carne',
-        'tomate',
-        'alface',
-        'farofa',
-        'chocolate'
-    ]
+    const [refeicoesHoje,setRefeicoesHoje] = useState([])
+
+    useEffect(() => {
+        async function lerRefeicoesHoje(){
+            const response = await api.get('/refeicoes/hoje')
+            const data = response.data
+
+            setRefeicoesHoje(data)
+        }
+
+        lerRefeicoesHoje()
+    },[])
 
     return(
         <SafeAreaView>
@@ -28,92 +34,36 @@ export default function RefeicoesHoje(){
 
             <View style={styles.viewRefeicoesHoje}>
                 <Text style={styles.diaHoje}>
-                    Segunda
+                    Hoje - Segunda
                 </Text>
                 <Text style={styles.refeicoesTitle}>
                     Refeições
                 </Text>
             </View>
-
-            <View style={styles.viewScrollViewRefeicoes}>
+            
+           <View style={styles.viewScrollViewRefeicoes}>
                 <View style={styles.viewRefeicoes}>
-                    <Text style={styles.textRefeicao}>
-                        Café da manha
-                    </Text>
                     <FlatList
-                        data={alimentos}
-                        keyExtractor={item => item}
-                        renderItem={({item}) => (
-                            <Text style={styles.alimento}>
-                                {item}
-                            </Text>
+                        data={refeicoesHoje}
+                        keyExtractor={item => item._id}
+                        renderItem={({item:refeicao}) => (
+                            <View style={{marginVertical:5}}>
+                                <Text style={styles.textRefeicao}>
+                                    {refeicao.refeicao}
+                                </Text>
+                                <FlatList
+                                    data={refeicao.alimentos}
+                                    keyExtractor={item => item._id}
+                                    renderItem={({item:alimento}) => (
+                                        <Text style={styles.alimento}>
+                                            {alimento.alimento}
+                                        </Text>
+                                    )}
+                                    horizontal
+                                    showsHorizontalScrollIndicator
+                                />
+                            </View>
                         )}
-                        horizontal
-                        showsHorizontalScrollIndicator
-                    />
-                </View>
-                <View style={styles.viewRefeicoes}>
-                    <Text style={styles.textRefeicao}>
-                        Lanche da manha
-                    </Text>
-                    <FlatList
-                        data={alimentos}
-                        keyExtractor={item => item}
-                        renderItem={({item}) => (
-                            <Text style={styles.alimento}>
-                                {item}
-                            </Text>
-                        )}
-                        horizontal
-                        showsHorizontalScrollIndicator
-                    />
-                </View>
-                <View style={styles.viewRefeicoes}>
-                    <Text style={styles.textRefeicao}>
-                        Almoço
-                    </Text>
-                    <FlatList
-                        data={alimentos}
-                        keyExtractor={item => item}
-                        renderItem={({item}) => (
-                            <Text style={styles.alimento}>
-                                {item}
-                            </Text>
-                        )}
-                        horizontal
-                        showsHorizontalScrollIndicator
-                    />
-                </View>
-                <View style={styles.viewRefeicoes}>
-                    <Text style={styles.textRefeicao}>
-                        Lanche da tarde
-                    </Text>
-                    <FlatList
-                        data={alimentos}
-                        keyExtractor={item => item}
-                        renderItem={({item}) => (
-                            <Text style={styles.alimento}>
-                                {item}
-                            </Text>
-                        )}
-                        horizontal
-                        showsHorizontalScrollIndicator
-                    />
-                </View>
-                <View style={styles.viewRefeicoes}>
-                    <Text style={styles.textRefeicao}>
-                        Jantar
-                    </Text>
-                    <FlatList
-                        data={alimentos}
-                        keyExtractor={item => item}
-                        renderItem={({item}) => (
-                            <Text style={styles.alimento}>
-                                {item}
-                            </Text>
-                        )}
-                        horizontal
-                        showsHorizontalScrollIndicator
                     />
                 </View>
             </View>
@@ -156,12 +106,13 @@ const styles = StyleSheet.create({
         elevation:5
     },
     textRefeicao:{
-        fontSize:13,
+        fontSize:14,
         fontWeight:'bold',
         color:'#000',
         borderBottomColor:'#ccc',
         borderBottomWidth:1,
-        marginBottom:5
+        marginBottom:5,
+        textTransform:'capitalize'
     },
     alimento:{
         backgroundColor:'#85F9A0',

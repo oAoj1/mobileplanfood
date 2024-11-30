@@ -14,6 +14,7 @@ import { Picker } from "@react-native-picker/picker";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Header from "../../components/Header";
+import Loading from "../../components/Loading";
 
 import api from "../../api/api";
 
@@ -71,13 +72,16 @@ export default function AddAlimento() {
         try {
             await api.post(`/refeicoes/${idRefeicao}/alimentos/${idAlimento}`);
             alert('Alimento adicionado');
-            
-            // Recarrega a refeição atualizada
+
             await lerRefeicaoAgora();
         } catch (error) {
             alert('Erro ao adicionar alimento');
             console.error(error);
         }
+    }
+
+    if(dia == undefined && refeicao == undefined){
+        return <Loading/>
     }
 
     return (

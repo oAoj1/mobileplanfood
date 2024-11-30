@@ -10,7 +10,6 @@ import CustomDrawer from './src/components/CustomDrawer';
 import AddAlimento from './src/screens/AdicionarAlimento';
 import RefeicaoAgora from './src/screens/InicioRefeicaoAgora';
 import RefeicoesHoje from './src/screens/RefeicoesHoje';
-import RefeicoesSemana from './src/screens/RefeicoesSemana';
 import Notificacoes from './src/screens/Notificacoes';
 
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -57,17 +56,6 @@ export default function App() {
             options={{drawerIcon:({color,size}) => (
               <Ionicons
                 name='restaurant-outline'
-                color={color}
-                size={size}
-              />
-            )}}
-          />
-          <Drawer.Screen
-            name="RefeicoesSemana"
-            component={RefeicoesSemana}
-            options={{drawerIcon:({color,size}) => (
-              <Ionicons
-                name='book-outline'
                 color={color}
                 size={size}
               />

@@ -6,7 +6,8 @@ import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
-  RefreshControl
+  RefreshControl,
+  Dimensions
 } from "react-native";
 
 import { useNavigation } from '@react-navigation/native';
@@ -16,6 +17,9 @@ import api from "../../api/api";
 import IoniIcons from 'react-native-vector-icons/Ionicons';
 
 import Header from "../../components/Header";
+import Loading from "../../components/Loading";
+
+const { width, height } = Dimensions.get('window')
 
 export default function RefeicaoAgora() {
 
@@ -60,13 +64,22 @@ export default function RefeicaoAgora() {
     }
   }
 
+  if(refeicaoAgora.length == 0){
+    return <Loading/>
+  }
+
   return (
     <SafeAreaView style={styles.telaPrincipal}> 
       <Header />
       
       {novoAlimentoInserido && (
-        <TouchableOpacity style={styles.novoAlimentoBanner} onPress={onRefresh}>
-          <Text style={styles.novoAlimentoTexto}>Novo alimento inserido, puxe para baixo para atualizar</Text>
+        <TouchableOpacity 
+          style={styles.novoAlimentoBanner} 
+          onPress={onRefresh}
+        >
+          <Text style={styles.novoAlimentoTexto}>
+            Novo alimento inserido, puxe para baixo para atualizar
+          </Text>
         </TouchableOpacity>
       )}
 
@@ -125,7 +138,10 @@ export default function RefeicaoAgora() {
 }
 
 const styles = StyleSheet.create({
-  telaPrincipal: {},
+  telaPrincipal:{
+    width: width,
+    height: height,
+  },
   tituloHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -153,8 +169,8 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   listaAlimentosContainer: {
-    width: 410,
-    height: 500,
+    width:'100%',
+    height:600,
     backgroundColor: '#36F76D',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
@@ -182,7 +198,7 @@ const styles = StyleSheet.create({
   },
   iconAdd: {
     position: 'absolute',
-    bottom: 18,
+    bottom: 50,
     left: '42.10%',
     backgroundColor: '#000',
     padding: 7,

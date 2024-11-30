@@ -1,5 +1,6 @@
 {
   "name": "mobileplanfood",
+  "displayName": "Plan Food",
   "version": "0.0.1",
   "private": true,
   "scripts": {

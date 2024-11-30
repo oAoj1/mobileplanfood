@@ -6,12 +6,16 @@ import {
     View, 
     StyleSheet,
     ScrollView,
-    FlatList
+    FlatList,
+    Dimensions
 } from "react-native"
 
-import Header from "../../components/Header"
-
 import api from "../../api/api"
+
+const { width, height } = Dimensions.get('window')
+
+import Header from "../../components/Header"
+import Loading from "../../components/Loading"
 
 export default function RefeicoesHoje(){
 
@@ -28,8 +32,12 @@ export default function RefeicoesHoje(){
         lerRefeicoesHoje()
     },[])
 
+    if(refeicoesHoje.length == 0){
+        return <Loading/>
+    }
+
     return(
-        <SafeAreaView>
+        <SafeAreaView style={styles.telaPrincipal}>
             <Header/>
 
             <View style={styles.viewRefeicoesHoje}>
@@ -73,6 +81,10 @@ export default function RefeicoesHoje(){
 }
 
 const styles = StyleSheet.create({
+    telaPrincipal:{
+        width:width,
+        height:height
+    },
     viewRefeicoesHoje:{
         alignItems:'center',
         position:'relative',

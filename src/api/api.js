@@ -1,7 +1,9 @@
 import axios from 'axios'
 
+const url = 'https://beplanfood.onrender.com'
+
 const api = axios.create({
-    baseURL:'https://beplanfood.onrender.com'
+    baseURL: url
 })
 
 export default api

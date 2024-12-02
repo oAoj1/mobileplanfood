@@ -7,13 +7,16 @@ import {
     TouchableOpacity, 
     FlatList,
     Modal, 
-    TextInput 
+    TextInput,
+    Dimensions
 } from "react-native";
 
 import Header from "../../components/Header";
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import notifee, { AndroidImportance } from '@notifee/react-native';
+
+const { width, height } = Dimensions.get('window')
 
 export default function Notificacoes() {
 
@@ -50,7 +53,6 @@ export default function Notificacoes() {
     const [isModalAberto, setIsModalAberto] = useState(false);
 
     useEffect(() => {
-        // Criar um canal de notificação no Android (necessário para Android 8.0+)
         async function createNotificationChannel() {
             await notifee.createChannel({
                 id: 'default',
@@ -62,12 +64,9 @@ export default function Notificacoes() {
         createNotificationChannel();
     }, []);
 
-    // Função para agendar notificações
     async function agendarNotificacao(id, title, message, date) {
-        // Solicitar permissão para mostrar notificações
         await notifee.requestPermission();
 
-        // Agendar notificação
         await notifee.createTriggerNotification(
             {
                 title: title,
@@ -78,19 +77,17 @@ export default function Notificacoes() {
             },
             {
                 type: 'timestamp',
-                timestamp: date.getTime(), // Passa o tempo da notificação
+                timestamp: date.getTime(),
             }
         );
     }
 
-    // Função para abrir o modal e permitir editar a hora
     function abrirModal(id, horas) {
         setIsModalAberto(true);
         setIdItem(id);
         setHorasSelecionadas(horas);
     }
 
-    // Salvar a alteração da hora
     function salvarAlteracaoHora() {
         const novasNotificacoes = notificacoes.map(item => {
             if (item.id === idItem) {
@@ -102,7 +99,6 @@ export default function Notificacoes() {
         setIsModalAberto(false);
     }
 
-    // Agendar notificações para cada refeição
     useEffect(() => {
         notificacoes.forEach((item) => {
             const horarioRefeicao = new Date();
@@ -120,7 +116,7 @@ export default function Notificacoes() {
     }, [notificacoes]);
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={styles.telaPrincipal}>
             <Header />
             <Text style={styles.textNotificacoes}>Notificações</Text>
 
@@ -195,6 +191,10 @@ export default function Notificacoes() {
 }
 
 const styles = StyleSheet.create({
+    telaPrincipal:{
+        width:width,
+        height:height
+    },  
     textNotificacoes: {
         textAlign: 'center',
         fontSize: 50,
@@ -267,8 +267,8 @@ const styles = StyleSheet.create({
     },
     bg: {
         marginTop: 40,
-        width: '100%',
-        height: 190,
+        width: width,
+        height: 100,
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         backgroundColor: '#A5FF96'

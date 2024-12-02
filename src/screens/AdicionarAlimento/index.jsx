@@ -6,7 +6,8 @@ import {
     Text, 
     StyleSheet,
     TouchableOpacity,
-    ScrollView
+    ScrollView,
+    Dimensions
 } from "react-native";
 
 import { Picker } from "@react-native-picker/picker";
@@ -17,6 +18,8 @@ import Header from "../../components/Header";
 import Loading from "../../components/Loading";
 
 import api from "../../api/api";
+
+const { width, height } = Dimensions.get('window')
 
 export default function AddAlimento() {
     
@@ -47,22 +50,20 @@ export default function AddAlimento() {
             }
         }
         
-        lerGruposAlimentos();
-    }, [grupoSelecionado]);
-
-    useEffect(() => {
-        lerRefeicaoAgora();
-    }, []);
-
-    async function lerRefeicaoAgora() {
-        try {
-            const response = await api.get(`/refeicoes/agora`);
-            const data = response.data;
-            setRefeicaoAgora([data]);
-        } catch (error) {
-            console.error(error);
+        async function lerRefeicaoAgora() {
+            try {
+                const response = await api.get(`/refeicoes/agora`);
+                const data = response.data;
+                setRefeicaoAgora([data]);
+            } catch (error) {
+                console.error(error);
+            }
         }
-    }
+
+        lerGruposAlimentos()
+        lerRefeicaoAgora()
+
+    }, [grupoSelecionado])
 
     const id = refeicaoAgora.map(refeicao => refeicao._id)[0];
     const dia = refeicaoAgora.map(refeicao => refeicao.dia)[0];
@@ -73,7 +74,6 @@ export default function AddAlimento() {
             await api.post(`/refeicoes/${idRefeicao}/alimentos/${idAlimento}`);
             alert('Alimento adicionado');
 
-            await lerRefeicaoAgora();
         } catch (error) {
             alert('Erro ao adicionar alimento');
             console.error(error);
@@ -85,7 +85,7 @@ export default function AddAlimento() {
     }
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={styles.telaPrincipal}>
             <Header />
 
             <View style={styles.viewTitleAddRefeicao}>
@@ -149,6 +149,10 @@ export default function AddAlimento() {
 }
 
 const styles = StyleSheet.create({
+    telaPrincipal:{
+        width:width,
+        height:height
+    },  
     planFoodText: {
         fontSize: 14,
         color: '#424242',
@@ -180,7 +184,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#357847',
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
-        height: 500,
+        width: width,
+        height: height,
         marginTop: 20,
         paddingHorizontal: 20,
         paddingVertical: 25

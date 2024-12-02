@@ -10,8 +10,6 @@ import {
   Dimensions
 } from "react-native";
 
-import { useNavigation } from '@react-navigation/native';
-
 import api from "../../api/api";
 
 import IoniIcons from 'react-native-vector-icons/Ionicons';
@@ -26,7 +24,6 @@ export default function RefeicaoAgora() {
   const [refeicaoAgora, setRefeicaoAgora] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [novoAlimentoInserido, setNovoAlimentoInserido] = useState(false);
-  const navigation = useNavigation();
 
   const lerRefeicaoAgora = async () => {
     try {
@@ -47,11 +44,6 @@ export default function RefeicaoAgora() {
   useEffect(() => {
     lerRefeicaoAgora();
   }, []);
-
-  function adicionarAlimento() {
-    navigation.navigate('AdicionarAlimento');
-    setNovoAlimentoInserido(true);
-  }
 
   async function removerAlimento(idRefeicao, idAlimento) {
     try {
@@ -124,15 +116,6 @@ export default function RefeicaoAgora() {
         )}
       />
 
-      <TouchableOpacity onPress={adicionarAlimento}>
-        <IoniIcons
-          name='add-outline'
-          size={55}
-          color='#FFF'
-          style={styles.iconAdd}
-        />
-      </TouchableOpacity>
-
     </SafeAreaView>
   );
 }
@@ -169,8 +152,8 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   listaAlimentosContainer: {
-    width:'100%',
-    height:600,
+    width:width,
+    height:height,
     backgroundColor: '#36F76D',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,

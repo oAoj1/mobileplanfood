@@ -5,7 +5,6 @@ import {
     Text, 
     View, 
     StyleSheet,
-    ScrollView,
     FlatList,
     Dimensions
 } from "react-native"
@@ -16,6 +15,8 @@ const { width, height } = Dimensions.get('window')
 
 import Header from "../../components/Header"
 import Loading from "../../components/Loading"
+
+import Icon  from 'react-native-vector-icons/MaterialIcons'
 
 export default function RefeicoesHoje(){
 
@@ -32,6 +33,8 @@ export default function RefeicoesHoje(){
         lerRefeicoesHoje()
     },[])
 
+    const dia = refeicoesHoje.map(refeicao => refeicao.dia)[0];
+
     if(refeicoesHoje.length == 0){
         return <Loading/>
     }
@@ -42,7 +45,7 @@ export default function RefeicoesHoje(){
 
             <View style={styles.viewRefeicoesHoje}>
                 <Text style={styles.diaHoje}>
-                    Hoje - Segunda
+                    {dia}
                 </Text>
                 <Text style={styles.refeicoesTitle}>
                     Refeições
@@ -50,26 +53,34 @@ export default function RefeicoesHoje(){
             </View>
             
            <View style={styles.viewScrollViewRefeicoes}>
-                <View style={styles.viewRefeicoes}>
+                <View>
                     <FlatList
                         data={refeicoesHoje}
                         keyExtractor={item => item._id}
                         renderItem={({item:refeicao}) => (
-                            <View style={{marginVertical:5}}>
+                            <View style={styles.viewRefeicoes}>
                                 <Text style={styles.textRefeicao}>
                                     {refeicao.refeicao}
                                 </Text>
-                                <FlatList
-                                    data={refeicao.alimentos}
-                                    keyExtractor={item => item._id}
-                                    renderItem={({item:alimento}) => (
-                                        <Text style={styles.alimento}>
-                                            {alimento.alimento}
-                                        </Text>
-                                    )}
-                                    horizontal
-                                    showsHorizontalScrollIndicator
-                                />
+                                <View style={{flexDirection:'column'}}>
+                                    <FlatList
+                                        data={refeicao.alimentos}
+                                        keyExtractor={item => item._id}
+                                        renderItem={({item:alimento}) => (
+                                            <View style={styles.viewAlimento}>
+                                                <Icon 
+                                                    name='egg'
+                                                    size={20}
+                                                    color='#000'
+                                                />
+                                                <Text style={styles.textAlimento}>
+                                                    {alimento.alimento}
+                                                </Text>
+                                            </View>
+                                        )}
+                                        showsHorizontalScrollIndicator
+                                    />
+                                </View>
                             </View>
                         )}
                     />
@@ -93,7 +104,8 @@ const styles = StyleSheet.create({
     },
     diaHoje:{
         fontSize:20,
-        color:'#272727'
+        color:'#272727',
+        textTransform:'capitalize'
     },
     refeicoesTitle:{
         fontWeight:'bold',
@@ -110,29 +122,32 @@ const styles = StyleSheet.create({
         height:550
     },
     viewRefeicoes:{
-        width:330,
+        width:250,
         backgroundColor:'#fff',
-        borderRadius:10,
         padding:10,
-        marginTop:10,
-        elevation:5
+        borderRadius:15,
+        marginBottom:10,
     },
+    viewLista:{
+        marginVertical:15
+    },  
     textRefeicao:{
-        fontSize:14,
-        fontWeight:'bold',
+        fontSize:12,
         color:'#000',
-        borderBottomColor:'#ccc',
-        borderBottomWidth:1,
-        marginBottom:5,
-        textTransform:'capitalize'
-    },
-    alimento:{
-        backgroundColor:'#85F9A0',
-        paddingVertical:1,
-        paddingHorizontal:7,
-        borderRadius:10,
         textTransform:'capitalize',
-        marginHorizontal:10,
-        fontSize:15
+        textAlign:'center'
+    },
+    viewAlimento:{
+        backgroundColor:'#F4F0F0',
+        flexDirection:'row',
+        alignItems:'center',
+        marginVertical:5,
+        padding:5,
+        borderRadius:20
+    },
+    textAlimento:{
+        fontSize:15,
+        textTransform:'capitalize',
+        marginLeft:5
     }
 })

@@ -16,7 +16,7 @@ const { width, height } = Dimensions.get('window')
 import Header from "../../components/Header"
 import Loading from "../../components/Loading"
 
-import Icon  from 'react-native-vector-icons/MaterialIcons'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 export default function RefeicoesHoje(){
 

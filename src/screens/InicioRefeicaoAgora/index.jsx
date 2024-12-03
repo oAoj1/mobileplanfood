@@ -179,15 +179,6 @@ const styles = StyleSheet.create({
     fontWeight: 'regular',
     color: '#000000',
   },
-  iconAdd: {
-    position: 'absolute',
-    bottom: 50,
-    left: '42.10%',
-    backgroundColor: '#000',
-    padding: 7,
-    borderRadius: 50,
-    elevation: 10,
-  },
   novoAlimentoBanner: {
     backgroundColor: '#ffdd57',
     padding: 10,

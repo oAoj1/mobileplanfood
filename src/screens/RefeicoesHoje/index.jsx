@@ -6,7 +6,8 @@ import {
     View, 
     StyleSheet,
     FlatList,
-    Dimensions
+    Dimensions,
+    ScrollView
 } from "react-native"
 
 import api from "../../api/api"
@@ -52,40 +53,41 @@ export default function RefeicoesHoje(){
                 </Text>
             </View>
             
-           <View style={styles.viewScrollViewRefeicoes}>
-                <View>
+            <View style={styles.viewScrollViewRefeicoes}>
+    <ScrollView 
+        contentContainerStyle={{ flexGrow: 1 }} 
+        showsVerticalScrollIndicator={false}>
+        <FlatList
+            data={refeicoesHoje}
+            keyExtractor={item => item._id}
+            renderItem={({item: refeicao}) => (
+                <View style={styles.viewRefeicoes}>
+                    <Text style={styles.textRefeicao}>
+                        {refeicao.refeicao}
+                    </Text>
                     <FlatList
-                        data={refeicoesHoje}
+                        data={refeicao.alimentos}
                         keyExtractor={item => item._id}
-                        renderItem={({item:refeicao}) => (
-                            <View style={styles.viewRefeicoes}>
-                                <Text style={styles.textRefeicao}>
-                                    {refeicao.refeicao}
+                        renderItem={({item: alimento}) => (
+                            <View style={styles.viewAlimento}>
+                                <Icon
+                                    name="egg"
+                                    size={20}
+                                    color="#000"
+                                />
+                                <Text style={styles.textAlimento}>
+                                    {alimento.alimento}
                                 </Text>
-                                <View style={{flexDirection:'column'}}>
-                                    <FlatList
-                                        data={refeicao.alimentos}
-                                        keyExtractor={item => item._id}
-                                        renderItem={({item:alimento}) => (
-                                            <View style={styles.viewAlimento}>
-                                                <Icon 
-                                                    name='egg'
-                                                    size={20}
-                                                    color='#000'
-                                                />
-                                                <Text style={styles.textAlimento}>
-                                                    {alimento.alimento}
-                                                </Text>
-                                            </View>
-                                        )}
-                                        showsHorizontalScrollIndicator
-                                    />
-                                </View>
                             </View>
                         )}
+                        nestedScrollEnabled={true}
                     />
                 </View>
-            </View>
+            )}
+            showsVerticalScrollIndicator={false}
+        />
+    </ScrollView>
+</View>
 
         </SafeAreaView>
     )
@@ -113,13 +115,14 @@ const styles = StyleSheet.create({
         color:'#000'
     },
     viewScrollViewRefeicoes:{
+        width:width,
+        height:height,
         backgroundColor:'#48FF2B',
         alignItems:'center',
         paddingVertical:30,
         paddingHorizontal:10,
         borderTopLeftRadius:40,
-        borderTopRightRadius:40,
-        height:550
+        borderTopRightRadius:40
     },
     viewRefeicoes:{
         width:250,
@@ -149,5 +152,17 @@ const styles = StyleSheet.create({
         fontSize:15,
         textTransform:'capitalize',
         marginLeft:5
-    }
+    },
+    viewScrollViewRefeicoes: {
+        width:width,
+        height:height,
+        flex: 1,
+        backgroundColor: '#48FF2B',
+        alignItems: 'center',
+        paddingVertical: 30,
+        paddingHorizontal: 10,
+        borderTopLeftRadius: 40,
+        borderTopRightRadius: 40,
+        overflow: 'hidden',
+    },
 })

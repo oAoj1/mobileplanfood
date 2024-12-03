@@ -54,40 +54,40 @@ export default function RefeicoesHoje(){
             </View>
             
             <View style={styles.viewScrollViewRefeicoes}>
-    <ScrollView 
-        contentContainerStyle={{ flexGrow: 1 }} 
-        showsVerticalScrollIndicator={false}>
-        <FlatList
-            data={refeicoesHoje}
-            keyExtractor={item => item._id}
-            renderItem={({item: refeicao}) => (
-                <View style={styles.viewRefeicoes}>
-                    <Text style={styles.textRefeicao}>
-                        {refeicao.refeicao}
-                    </Text>
+                <ScrollView 
+                    contentContainerStyle={{ flexGrow: 1 }} 
+                    showsVerticalScrollIndicator={false}>
                     <FlatList
-                        data={refeicao.alimentos}
+                        data={refeicoesHoje}
                         keyExtractor={item => item._id}
-                        renderItem={({item: alimento}) => (
-                            <View style={styles.viewAlimento}>
-                                <Icon
-                                    name="egg"
-                                    size={20}
-                                    color="#000"
-                                />
-                                <Text style={styles.textAlimento}>
-                                    {alimento.alimento}
+                        renderItem={({item: refeicao}) => (
+                            <View style={styles.viewRefeicoes}>
+                                <Text style={styles.textRefeicao}>
+                                    {refeicao.refeicao}
                                 </Text>
+                                <FlatList
+                                    data={refeicao.alimentos}
+                                    keyExtractor={item => item._id}
+                                    renderItem={({item: alimento}) => (
+                                        <View style={styles.viewAlimento}>
+                                            <Icon
+                                                name="breakfast-dining"
+                                                size={20}
+                                                color="#000"
+                                            />
+                                            <Text style={styles.textAlimento}>
+                                                {alimento.alimento}
+                                            </Text>
+                                        </View>
+                                    )}
+                                    nestedScrollEnabled={true}
+                                />
                             </View>
                         )}
-                        nestedScrollEnabled={true}
+                        showsVerticalScrollIndicator={false}
                     />
-                </View>
-            )}
-            showsVerticalScrollIndicator={false}
-        />
-    </ScrollView>
-</View>
+                </ScrollView>
+            </View>
 
         </SafeAreaView>
     )
@@ -113,16 +113,6 @@ const styles = StyleSheet.create({
         fontWeight:'bold',
         fontSize:50,
         color:'#000'
-    },
-    viewScrollViewRefeicoes:{
-        width:width,
-        height:height,
-        backgroundColor:'#48FF2B',
-        alignItems:'center',
-        paddingVertical:30,
-        paddingHorizontal:10,
-        borderTopLeftRadius:40,
-        borderTopRightRadius:40
     },
     viewRefeicoes:{
         width:250,
@@ -151,7 +141,8 @@ const styles = StyleSheet.create({
     textAlimento:{
         fontSize:15,
         textTransform:'capitalize',
-        marginLeft:5
+        marginLeft:5,
+        color:'#000'
     },
     viewScrollViewRefeicoes: {
         width:width,
